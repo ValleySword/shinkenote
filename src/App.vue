@@ -40,7 +40,7 @@
           </v-col>
         </v-row>
       </v-container>
-      <v-btn>テスト(未設定)</v-btn>
+      <v-btn @click="test">テスト(未設定)</v-btn>
     </v-main>
   </v-app>
   <header>
@@ -75,6 +75,16 @@ export default {
     this.readFavs()
   },
   methods: {
+    test() {
+          axios.get('/')
+            .then(response => {
+              console.log(response)
+            })
+            .catch(error => {
+              console.log('NO')
+              console.log(error);
+            })
+          },
     handleFilename(event) {
       const url = URL.createObjectURL(event.target.files[0], {type: "image/png"});
       this.files.push({ id: id++, name: event.target.files[0].name, star: false, url: url, blob: event.target.files[0], key: null })
