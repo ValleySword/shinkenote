@@ -40,7 +40,9 @@
           </v-col>
         </v-row>
       </v-container>
-      <v-btn @click="test">テスト(未設定)</v-btn>
+      <v-btn @click="imageSearch">のちのち画像検索</v-btn>
+      <!-- <li v-for="test in tests" :key="test.id"></li> -->
+      <img :src="imgData.src" v-for="imgData in imgDatas" :key="imgData.id">
     </v-main>
   </v-app>
   <header>
@@ -62,6 +64,7 @@ export default {
       filterName: '',
       isH: false,
       result: null,
+      imgDatas: [],
     }
   },
   computed: {
@@ -75,16 +78,21 @@ export default {
     this.readFavs()
   },
   methods: {
-    test() {
-          axios.get('/')
-            .then(response => {
-              console.log(response)
-            })
-            .catch(error => {
-              console.log('NO')
-              console.log(error);
-            })
-          },
+    async imageSearch() {
+      await axios.get('http://127.0.0.1:5173/prefix')
+        .then(response => {
+          for (const img of response.data) {
+            // imgタグ作る理由聞く
+            // const imgTag = document.createElement("img")
+            // imgTag.src = `http://127.0.0.1:5173/image?img=${img}`
+            this.imgDatas.push({name: img, src: `http://127.0.0.1:5173/image?img=${img}`})
+          }
+        })
+        .catch(error => {
+          console.log('NO')
+          console.log(error);
+        })
+      },
     handleFilename(event) {
       const url = URL.createObjectURL(event.target.files[0], {type: "image/png"});
       this.files.push({ id: id++, name: event.target.files[0].name, star: false, url: url, blob: event.target.files[0], key: null })
