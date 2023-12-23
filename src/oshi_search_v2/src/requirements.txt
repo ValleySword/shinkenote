@@ -1,3 +1,0 @@
-python-dotenv
-discordwebhook
-google-api-python-client
